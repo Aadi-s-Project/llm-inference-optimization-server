@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class LlmService {
 
     // For now, this method returns a mock response.
-    // Later we will add rate limiting, cache, batching, and OpenAI calls here.
+    // Later we will add semantic cache, batching, and OpenAI calls here.
     public LlmResponse generate(LlmRequest request) {
         return new LlmResponse("Mock response for: " + request.prompt());
     }
