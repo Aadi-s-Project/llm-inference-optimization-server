@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-# Commands to save Stage 4 (Rate Limiter) to Git
-# We skip Stage 5 as it was reverted.
+# Commands to save Stage 5 (Exact Cache) to Git
 
 git add .
-git commit -m "Stage 4: Implement Token Bucket Rate Limiter using Bucket4j and Interceptor pattern"
-git tag stage-4-rate-limiter
+git commit -m "Stage 5: Implement Basic Exact Cache using Spring Cache and Caffeine"
+git tag stage-5-exact-cache
 git push
 git push origin --tags

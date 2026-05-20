@@ -21,10 +21,10 @@ This document tracks the progress of the optimization pipeline implementation.
 - [x] Add token bucket per user (using Bucket4j).
 - [x] Design pattern: Filter/Interceptor Pattern.
 
-## 🟡 Stage 5: Basic Exact Cache (Next Up)
-- [ ] Implement Cache-Aside Pattern for exact string matches.
+## 🟢 Stage 5: Basic Exact Cache
+- [x] Implement Cache-Aside Pattern for exact string matches using Spring Cache + Caffeine.
 
-## ⚪ Stage 6: Semantic Cache
+## 🟡 Stage 6: Semantic Cache (Next Up)
 - [ ] Vector embeddings and similarity comparison (> 95%).
 - [ ] Design pattern: Repository Pattern + Strategy Pattern.
 
