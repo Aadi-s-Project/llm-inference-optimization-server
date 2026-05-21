@@ -21,6 +21,7 @@ public class CacheConfig {
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager(LLM_RESPONSES_CACHE);
         cacheManager.setCaffeine(caffeineCacheBuilder());
+        cacheManager.setAsyncCacheMode(true); // Enable support for CompletableFuture
         return cacheManager;
     }
 

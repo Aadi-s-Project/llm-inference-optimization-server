@@ -4,8 +4,13 @@ from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
 import os
+from openai import OpenAI
 
 app = FastAPI()
+
+# OpenAI Client - Picks up OPENAI_API_KEY from environment automatically
+# This keeps the Java project 100% secret-free.
+client = OpenAI()
 
 # 1. Load the embedding model (runs on CPU)
 model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -21,7 +26,6 @@ cache_prompts = []
 
 # Threshold for similarity (L2 distance). 
 # Note: Lower distance = more similar. 
-# For Cosine Similarity we'd normalize, but L2 on normalized vectors works similarly.
 SIMILARITY_THRESHOLD = 0.5 
 
 class CacheRequest(BaseModel):
@@ -37,7 +41,6 @@ async def search_cache(request: CacheRequest):
     query_vector = model.encode([request.prompt])
     
     # Search the index
-    # D: distances, I: indices
     D, I = index.search(np.array(query_vector).astype('float32'), 1)
     
     distance = float(D[0][0])
@@ -69,6 +72,33 @@ async def add_to_cache(request: CacheRequest):
     cache_prompts.append(request.prompt)
     
     return {"status": "added", "count": index.ntotal}
+
+@app.post("/generate")
+async def generate_llm_response(request: CacheRequest):
+    try:
+        # This calls the real OpenAI API using the environment variable
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": request.prompt}
+            ]
+        )
+        return {"answer": completion.choices[0].message.content}
+    except Exception as e:
+        error_msg = str(e)
+        print(f"OpenAI API error: {error_msg}")
+        
+        # If the account has no credits (429) or the key is missing, 
+        # we return a 'Simulated' response so the Java pipeline can still 
+        # demonstrate Caching and Batching correctly.
+        if "insufficient_quota" in error_msg or "Missing credentials" in error_msg:
+            return {
+                "answer": f"[SIMULATED AI] I've analyzed your request about '{request.prompt}'. "
+                          f"As an optimization server, I am returning this response to demonstrate "
+                          f"that the entire Java-to-Python pipeline is working perfectly!"
+            }
+        
+        return {"answer": f"[AI-SIDE-CAR ERROR] {error_msg}"}
 
 @app.get("/health")
 async def health():

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
+
 // This controller handles LLM-related HTTP requests.
 @RestController
 public class LlmController {
@@ -21,8 +23,9 @@ public class LlmController {
     // When someone sends POST /api/llm/generate,
     // Spring converts the JSON body into an LlmRequest object
     // and passes it into this method.
+    // Returning CompletableFuture tells Spring to handle the request asynchronously.
     @PostMapping("/api/llm/generate")
-    public LlmResponse generate(@RequestBody LlmRequest request) {
+    public CompletableFuture<LlmResponse> generate(@RequestBody LlmRequest request) {
 
         // Controller stays thin.
         // It only forwards the request to the service and returns the result.

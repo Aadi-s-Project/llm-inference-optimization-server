@@ -29,19 +29,19 @@ This document tracks the progress of the optimization pipeline implementation.
 - [x] Integration: Java Gateway calls Python AI Service.
 - [x] Design pattern: Sidecar / Microservice Pattern.
 
-## 🟡 Stage 7: Request Batcher (Next Up)
-- [ ] Coalesce compatible requests (20ms window).
-- [ ] Design pattern: Producer-Consumer / Batching Pattern.
+## 🟢 Stage 7: Request Batcher
+- [x] Coalesce compatible requests (50ms window).
+- [x] Design pattern: Producer-Consumer / Batching Pattern.
 
-## ⚪ Stage 8: LLM API Client
-- [ ] Implement OpenAI Adapter.
-- [ ] Design pattern: Adapter Pattern.
+## 🟢 Stage 8: LLM API Client
+- [x] Implement OpenAI Adapter using the Adapter Pattern.
+- [x] Support for API Key via environment variables.
 
-## ⚪ Stage 9: Logging and Metrics
-- [ ] Track latency, cost, cache hit %, and batch size.
-- [ ] Design pattern: Observer / Metrics Collector.
+## 🟢 Stage 9: Logging and Metrics
+- [x] Track latency, cost, cache hit %, and batch size.
+- [x] Design pattern: Observer / Metrics Collector.
 
-## ⚪ Stage 10: Tests
+## 🟡 Stage 10: Tests (Next Up)
 - [ ] Unit and Integration tests.
 
 ## ⚪ Stage 11: Production Readiness
