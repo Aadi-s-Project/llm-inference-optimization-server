@@ -24,11 +24,12 @@ This document tracks the progress of the optimization pipeline implementation.
 ## 🟢 Stage 5: Basic Exact Cache
 - [x] Implement Cache-Aside Pattern for exact string matches using Spring Cache + Caffeine.
 
-## 🟡 Stage 6: Semantic Cache (Next Up)
-- [ ] Vector embeddings and similarity comparison (> 95%).
-- [ ] Design pattern: Repository Pattern + Strategy Pattern.
+## 🟢 Stage 6: Semantic Cache
+- [x] Implement Python Microservice for vector similarity search.
+- [x] Integration: Java Gateway calls Python AI Service.
+- [x] Design pattern: Sidecar / Microservice Pattern.
 
-## ⚪ Stage 7: Request Batcher
+## 🟡 Stage 7: Request Batcher (Next Up)
 - [ ] Coalesce compatible requests (20ms window).
 - [ ] Design pattern: Producer-Consumer / Batching Pattern.
 
