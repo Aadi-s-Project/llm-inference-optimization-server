@@ -1,8 +1,18 @@
 package com.example.llminference.model;
 
-// This record represents the JSON request body sent by the user.
+/**
+ * Represents the incoming LLM request.
+ * @param provider "openai", "gemini", or "claude"
+ */
 public record LlmRequest(
         String userId,
-        String prompt
+        String prompt,
+        String provider
 ) {
+    // Provide a default constructor or use a default value if provider is null
+    public LlmRequest {
+        if (provider == null) {
+            provider = "openai";
+        }
+    }
 }

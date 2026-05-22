@@ -8,22 +8,22 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Implementation of LlmClient that proxies requests to the Python AI Sidecar.
- * This keeps the Java project 100% secret-free.
+ * Supports multiple providers: OpenAI, Gemini, Claude.
  */
 @Service
-public class OpenAiClient implements LlmClient {
+public class MultiAiClient implements LlmClient {
 
     private final RestTemplate restTemplate;
-    // Calling our local Python service instead of OpenAI directly
     private final String pythonServiceUrl = "http://localhost:5005";
 
-    public OpenAiClient() {
+    public MultiAiClient() {
         this.restTemplate = new RestTemplate();
     }
 
@@ -37,12 +37,13 @@ public class OpenAiClient implements LlmClient {
     @Override
     public LlmResponse generate(LlmRequest request) {
         try {
-            HttpEntity<Map<String, String>> entity = new HttpEntity<>(
-                    Map.of("prompt", request.prompt()), 
-                    createHeaders()
-            );
+            // Explicitly creating a Map to ensure Jackson serializes all fields
+            Map<String, String> body = new HashMap<>();
+            body.put("prompt", request.prompt());
+            body.put("provider", request.provider());
 
-            // Forward the request to Python
+            HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, createHeaders());
+
             return restTemplate.postForObject(
                     pythonServiceUrl + "/generate",
                     entity,
@@ -56,7 +57,6 @@ public class OpenAiClient implements LlmClient {
 
     @Override
     public List<LlmResponse> generateBatch(List<LlmRequest> requests) {
-        // Proxy each request to the sidecar
         return requests.stream()
                 .map(this::generate)
                 .collect(Collectors.toList());

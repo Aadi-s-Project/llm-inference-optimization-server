@@ -29,9 +29,12 @@ public class SemanticCacheClient {
         return headers;
     }
 
-    public SemanticCacheResponse search(String prompt) {
+    public SemanticCacheResponse search(String prompt, String provider) {
         try {
-            HttpEntity<Map<String, String>> entity = new HttpEntity<>(Map.of("prompt", prompt), createHeaders());
+            HttpEntity<Map<String, String>> entity = new HttpEntity<>(
+                Map.of("prompt", prompt, "provider", provider), 
+                createHeaders()
+            );
             return restTemplate.postForObject(
                     pythonServiceUrl + "/search",
                     entity,
@@ -43,10 +46,10 @@ public class SemanticCacheClient {
         }
     }
 
-    public void add(String prompt, String response) {
+    public void add(String prompt, String response, String provider) {
         try {
             HttpEntity<Map<String, String>> entity = new HttpEntity<>(
-                    Map.of("prompt", prompt, "response", response),
+                    Map.of("prompt", prompt, "response", response, "provider", provider),
                     createHeaders()
             );
             restTemplate.postForObject(

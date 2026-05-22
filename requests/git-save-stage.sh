@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# Commands to save Stage 5 (Exact Cache) to Git
+# Commands to save Stage 9 (Logging & Metrics) to Git
 
 git add .
-git commit -m "Stage 5: Implement Basic Exact Cache using Spring Cache and Caffeine"
-git tag stage-5-exact-cache
-git push
+git commit -m "Stage 9: Implement multi-provider AI gateway with logging and metrics using SOLID principles"
+git tag stage-9-logging-and-metrics
+git push origin main
 git push origin --tags

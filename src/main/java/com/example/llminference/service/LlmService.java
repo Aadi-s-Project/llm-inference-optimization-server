@@ -25,13 +25,15 @@ public class LlmService {
     }
 
     // Exact Cache (Stage 5)
-    @Cacheable(value = CacheConfig.LLM_RESPONSES_CACHE, key = "#request.prompt()")
+    // We include the provider in the key so that "Tell me a joke" via OpenAI 
+    // is cached separately from "Tell me a joke" via Gemini.
+    @Cacheable(value = CacheConfig.LLM_RESPONSES_CACHE, key = "#request.prompt() + '-' + #request.provider()")
     public CompletableFuture<LlmResponse> generate(LlmRequest request) {
         long startTime = System.currentTimeMillis();
         System.out.println("Exact Cache Miss! Checking Semantic Cache for: " + request.prompt());
 
         // 1. Check Semantic Cache (Stage 6)
-        SemanticCacheResponse semanticHit = semanticCacheClient.search(request.prompt());
+        SemanticCacheResponse semanticHit = semanticCacheClient.search(request.prompt(), request.provider());
 
         if (semanticHit != null && semanticHit.hit()) {
             System.out.println("Semantic Cache HIT! Match found for: " + semanticHit.originalPrompt());
@@ -46,7 +48,7 @@ public class LlmService {
         
         return requestBatcher.submit(request).thenApply(response -> {
             // 3. Store in Semantic Cache for next time
-            semanticCacheClient.add(request.prompt(), response.answer());
+            semanticCacheClient.add(request.prompt(), response.answer(), request.provider());
             
             long latency = System.currentTimeMillis() - startTime;
             metricsService.recordRequest(latency, false, false);
