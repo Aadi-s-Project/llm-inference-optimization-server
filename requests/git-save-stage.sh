@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# Commands to save Stage 9 (Logging & Metrics) to Git
+# Commands to save Stage 10 (Automated Testing) to Git
 
 git add .
-git commit -m "Stage 9: Implement multi-provider AI gateway with logging and metrics using SOLID principles"
-git tag stage-9-logging-and-metrics
+git commit -m "Stage 10: Implement comprehensive unit and integration testing suite for optimization pipeline"
+git tag stage-10-testing
 git push origin main
 git push origin --tags

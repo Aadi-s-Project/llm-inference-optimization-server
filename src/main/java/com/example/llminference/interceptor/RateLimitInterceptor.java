@@ -23,6 +23,11 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Skip rate limiting if this is an internal async dispatch
+        if (request.getDispatcherType().name().equals("ASYNC")) {
+            return true;
+        }
+
         // We only want to rate limit the LLM generation endpoint.
         if (!request.getRequestURI().startsWith("/api/llm/")) {
             return true;

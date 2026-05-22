@@ -35,14 +35,18 @@ This document tracks the progress of the optimization pipeline implementation.
 
 ## 🟢 Stage 8: LLM API Client
 - [x] Implement OpenAI Adapter using the Adapter Pattern.
-- [x] Support for API Key via environment variables.
+- [x] Support for API Key via environment variables (.env support).
+- [x] Extensible Multi-Provider support (Gemini, Claude).
+- [x] Strategy Pattern for AI providers.
 
 ## 🟢 Stage 9: Logging and Metrics
 - [x] Track latency, cost, cache hit %, and batch size.
 - [x] Design pattern: Observer / Metrics Collector.
 
-## 🟡 Stage 10: Tests (Next Up)
-- [ ] Unit and Integration tests.
+## 🟢 Stage 10: Tests
+- [x] Unit tests for Rate Limiter and Batching logic.
+- [x] Integration tests for REST endpoints.
+- [x] MockMvc with Async support.
 
-## ⚪ Stage 11: Production Readiness
+## 🟡 Stage 11: Production Readiness (Next Up)
 - [ ] Docker, Config, README.
