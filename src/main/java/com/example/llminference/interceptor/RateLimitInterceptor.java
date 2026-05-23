@@ -23,6 +23,11 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Allow CORS preflight requests (OPTIONS) to pass through without rate limiting or header checks.
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         // Skip rate limiting if this is an internal async dispatch
         if (request.getDispatcherType().name().equals("ASYNC")) {
             return true;
